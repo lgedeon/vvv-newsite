@@ -28,15 +28,15 @@ fi
 # this lists all the pieces we will need for the rest of the script
 	newsite_key[1]=1
 	newsite_url[1]=newsite.dev
-	newsite_dir[1]=${newsite_url[1]}  # I typically name the directory and db after the domain. Feel free to override.
-	newsite_db[1]=${newsite_url[1]}
+	newsite_dir[1]=newsite_dev
+	newsite_db[1]=${newsite_dir[1]}
 	newsite_ver[1]=latest
 	newsite_title[1]="${newsite_url[1]} version:${newsite_ver[1]}"
 
 	newsite_key[2]=2
 	newsite_url[2]=oldsite.dev
-	newsite_dir[2]=${newsite_url[2]}  # I typically name the directory and db after the domain. Feel free to override.
-	newsite_db[2]=${newsite_url[2]}
+	newsite_dir[2]=oldsite_dev
+	newsite_db[2]=${newsite_dir[2]}
 	newsite_ver[2]=latest
 	newsite_title[2]="${newsite_url[2]} version:${newsite_ver[2]}"
 

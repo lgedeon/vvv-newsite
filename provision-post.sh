@@ -105,7 +105,7 @@ then
 			wp core config --dbname=${newsite_db[$key]} --dbuser=wp --dbpass=wp --quiet --extra-php <<PHP
 define( 'WP_DEBUG', true );
 PHP
-			wp core install --url=--quiet --title=${newsite_title[$key]} --admin_name=admin --admin_email="admin@local.dev" --admin_password="password"
+			wp core install --url=${newsite_url[$key]} --quiet --title=${newsite_title[$key]} --admin_name=admin --admin_email="admin@local.dev" --admin_password="password"
 		else
 			if [[ ${newsite_ver[$key]} == Stable ]]
 			then

@@ -41,9 +41,9 @@ fi
 	newsite_title[2]="${newsite_url[2]} version:${newsite_ver[2]}"
 
 # create a /srv/config/nginx-config/sites/new_site.conf if one does not yet exist - we will append to it in a bit.
-if [ ! -f /srv/config/nginx-config/sites/new_site.conf ]
+if [ ! -f /srv/config/nginx-config/sites/local-nginx.conf ]
 then
-	touch /srv/config/nginx-config/sites/new_site.conf
+	touch /srv/config/nginx-config/sites/local-nginx.conf
 fi
 
 # add databases to /database/init-custom.sql
@@ -65,12 +65,6 @@ done
 
 # Run (rerun) init-custom.sql that we just added new sites to
 mysql -u root -pblank < /srv/database/init-custom.sql | echo -e "\nInitial custom MySQL scripting..."
-
-
-# Things I still may need to do
-# cp ~/Sites/vagrant-local/config/nginx-config/sites/local-nginx-example.conf-sample ~/Sites/vagrant-local/config/nginx-config/sites/new_site.conf
-# edit ~/Sites/vagrant-local/config/nginx-config/sites/seos.dev.conf
-# ## edit server_name and root
 
 # build a list of domains to add to /etc/hosts
 DOMAINS=""
@@ -119,11 +113,24 @@ PHP
 				svn up --ignore-externals
 			fi
 		fi
+
 		if ! grep -q "${newsite_url[$key]}" /etc/hosts
 		then
 			DOMAINS+=" ${newsite_url[$key]}"
 		fi
 
+		if ! grep -q "${newsite_url[$key]}" /srv/config/nginx-config/sites/local-nginx.conf
+		then
+		cat << CONFIG >> /srv/config/nginx-config/sites/local-nginx.conf
+server {
+	listen       80;
+	listen       443 ssl;
+	server_name  ${newsite_url[$key]};
+	root         /srv/www/${newsite_dir[$key]};
+	include /etc/nginx/nginx-wp-common.conf;
+}
+CONFIG
+		fi
 	done
 fi
 
@@ -147,7 +154,7 @@ fi
 
 end_seconds=`date +%s`
 echo "-----------------------------"
-echo "Provisioning complete in `expr $end_seconds - $start_seconds` seconds"
+echo "New sites added/updated in `expr $end_seconds - $start_seconds` seconds"
 if [[ $ping_result == *bytes?from* ]]
 then
 	echo "External network connection established, new sites have been installed."

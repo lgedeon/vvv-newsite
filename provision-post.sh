@@ -40,15 +40,6 @@ fi
 	newsite_ver[2]=latest
 	newsite_title[2]="${newsite_url[2]} version:${newsite_ver[2]}"
 
-for key in "${newsite_key[@]}"
-do
-	echo ${newsite_key[$key]}
-	echo ${newsite_url[$key]}
-	echo ${newsite_dir[$key]}
-	echo ${newsite_ver[$key]}
-	echo ${newsite_title[$key]}
-done
-
 # create a /srv/config/nginx-config/sites/new_site.conf if one does not yet exist - we will append to it in a bit.
 if [ ! -f /srv/config/nginx-config/sites/new_site.conf ]
 then
